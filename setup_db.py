@@ -37,6 +37,33 @@ AFTER THIS, WE GENERATE THE DATAFRAME OF THE TRANSACTIONS FROM THE USERS
 WITH HIS 
 """
 
+id_transaction = np.arange(1,20001)
+
+user_id_tran = rng.integers(1,501, size= 20000)
+
+charge = np.round(rng.lognormal(mean=6.0, sigma= 0.8, size= 20000),2)
+
+timestamp = rng.choice(pd.date_range("2026-10-01", "2026-10-31", freq="2min"),size=20000)
+
+is_fraud = 0
+
+category = rng.choice(["Supermarket","Electronics","Restaurant","Streaming"],
+                      size=20000)
+
+purchase_city = rng.choice(cities, size= 20000)
+
+transactions = {"id_transaction" : id_transaction,
+                "user_id_tran": user_id_tran,
+                "charge" : charge,
+                "date" : timestamp,
+                "category" : category,
+                "city": purchase_city,
+                "is_fraud": is_fraud}
+
+df_transactions = pd.DataFrame(transactions)
+
+#HERE, WE'RE GOING TO CREATE THE FRAUD TRANSACTIONS
+
 
 
 
