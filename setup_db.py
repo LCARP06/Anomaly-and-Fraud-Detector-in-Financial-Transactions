@@ -1,7 +1,11 @@
 import pandas as pd
-import sqlite3
+import sqlite3 
 import numpy as np
-import random
 
-np.random.seed(42)
-random.seed(42)
+"""
+WE CREATE THE DATABASE (BOTH TABLES)
+"""
+
+con = sqlite3.connect("transactions.db")
+con.close()
+
