@@ -53,7 +53,7 @@ category = rng.choice(["Supermarket","Electronics","Restaurant","Streaming"],
 purchase_city = rng.choice(cities, size= 20000)
 
 transactions = {"id_transaction" : id_transaction,
-                "user_id_tran": user_id_tran,
+                "user_id": user_id_tran,
                 "charge" : charge,
                 "date" : timestamp,
                 "category" : category,
@@ -64,7 +64,30 @@ df_transactions = pd.DataFrame(transactions)
 
 #HERE, WE'RE GOING TO CREATE THE FRAUD TRANSACTIONS
 
+frauds = []
+tx_counter = 20001
 
+for i in range(1,101):
+    uid = rng.choice(user_id)
+    base_time = pd.Timestamp("2026-10-17 13:00:00")     
+    fecha_fraude = base_time + pd.Timedelta(minutes=rng.integers(0, 10000))
+    
+    frauds.append([tx_counter,uid,rng.choice(charge),
+                  fecha_fraude,rng.choice(category),"CDMX", 
+                    1])
+    tx_counter += 1
+    frauds.append([tx_counter,uid, 12000,
+                  fecha_fraude + pd.Timedelta(minutes=8),rng.choice(category),"Tijuana",1])
+    tx_counter += 1
+    
+df_frauds = pd.DataFrame(frauds, columns=df_transactions.columns)
+df_total = pd.concat([df_transactions, df_frauds])
 
+df_total = df_total.sort_values("date")
+
+df_total.to_sql(name = "transactions",
+                con = con,
+                if_exists = "replace",
+                index = False)
 
 con.close()
